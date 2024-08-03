@@ -1,0 +1,14 @@
+{
+  "title": "Documentation",
+  "root": true,
+  "pages": [
+    "---Guide---",
+    "get-started",
+    "---School (admin)---",
+    "schools",
+    "editor",
+    "users",
+    "---Lessons (users)---",
+    "lessons"
+  ]
+}

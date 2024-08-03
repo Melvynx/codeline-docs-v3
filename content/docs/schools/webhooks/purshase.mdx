@@ -1,0 +1,76 @@
+---
+title: Purshase Event
+description: When a customer makes a purchase, a purchase event is triggered. This event can be used to send a notification to the customer or to update the customer's profile.
+---
+
+# Purshase Event
+
+When a customer makes a purchase, a purchase event is triggered. This event can be used to send a notification to the customer or to update the customer's profile.
+
+## Object
+
+Here is the `TypeScript` type that represents the object that is sent with the purchase event:
+
+```ts
+type PurshasePayload = {
+  type: "purchase";
+  secret: string;
+  data: {
+    email: string;
+    createdAt: string;
+    amount: number;
+    currency: string;
+    isReccuring: boolean;
+    // Item can be a product or a bundle
+    itemId: string;
+    type: "product" | "bundle";
+    ip: string;
+    userAgent: string;
+  };
+};
+```
+
+You can use it as following in `NextJS 14`:
+
+```tsx
+const CodelineWebhook = z.object({
+  type: z.string(),
+  secret: z.string(),
+  data: z.any(),
+});
+
+type PurshasePayload = {
+  email: string;
+  createdAt: string;
+  amount: number;
+  currency: string;
+  isReccuring: boolean;
+  // Item can be a producπt or a bundle
+  itemId: string;
+  type: "product" | "bundle";
+};
+
+export const POST = async (req: NextRequest) => {
+  const body = await req.json();
+
+  const event = CodelineWebhook.parse(body);
+
+  if (event.secret !== process.env.CODELINE_WEBHOOK_SECRET) {
+    return NextResponse.json({ ok: false }, { status: 401 });
+  }
+
+  switch (event.type) {
+    case "purchase":
+      const data = event.data as PurshasePayload;
+
+      // Do something with the data
+      break;
+    default:
+      break;
+  }
+
+  return NextResponse.json({
+    ok: true,
+  });
+};
+```
