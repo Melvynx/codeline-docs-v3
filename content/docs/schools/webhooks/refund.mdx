@@ -1,20 +1,20 @@
 ---
-title: Purchase Event
-description: When a customer makes a purchase, a purchase event is triggered. This event can be used to send a notification to the customer or to update the customer's profile.
+title: Refund Event
+description: When a customer requests a refund, a refund event is triggered. This event can be used to send a notification to the customer or to update the customer's profile.
 ---
 
-When a customer makes a purchase, a purchase event is triggered. This event can be used to send a notification to the customer or to update the customer's profile.
+When you refund a customer, a refund event is triggered. This event can be used to send a notification to the customer or to update the customer's profile.
 
 ## Object
 
-Here is the `TypeScript` type that represents the object that is sent with the purchase event:
+Here is the `TypeScript` type that represents the object that is sent with the refund event:
 
 ```ts
 import { z } from 'zod';
 import { ItemPriceType } from 'path-to-your-enum-file'; // Adjust the import path as necessary
 
-const PurchasePayloadSchema = z.object({
-  type: z.literal('purchase'),
+const RefundPayloadSchema = z.object({
+  type: z.literal('refund'),
   data: z.object({
     userId: z.string(),
     userDiscordId: z.string().optional(),
@@ -28,8 +28,6 @@ const PurchasePayloadSchema = z.object({
     itemSlug: z.string().optional(),
     itemTitle: z.string(),
     itemType: z.enum(['product', 'bundle']),
-    ip: z.string().ip(),
-    userAgent: z.string(),
   }),
 });
 ```
@@ -47,8 +45,8 @@ const CodelineWebhook = z.object({
   data: z.any(),
 });
 
-const PurchasePayloadSchema = z.object({
-  type: z.literal('purchase'),
+const RefundPayloadSchema = z.object({
+  type: z.literal('refund'),
   data: z.object({
     userId: z.string(),
     userDiscordId: z.string().optional(),
@@ -62,8 +60,6 @@ const PurchasePayloadSchema = z.object({
     itemSlug: z.string().optional(),
     itemTitle: z.string(),
     itemType: z.enum(['product', 'bundle']),
-    ip: z.string().ip(),
-    userAgent: z.string(),
   }),
 });
 
@@ -77,8 +73,8 @@ export const POST = async (req: NextRequest) => {
   }
 
   switch (event.type) {
-    case "purchase":
-      const data = PurchasePayloadSchema.parse(event.data);
+    case "refund":
+      const data = RefundPayloadSchema.parse(event.data);
 
       // Do something with the data
       break;
@@ -90,3 +86,4 @@ export const POST = async (req: NextRequest) => {
     ok: true,
   });
 };
+```
