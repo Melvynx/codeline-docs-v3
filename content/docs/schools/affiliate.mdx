@@ -1,0 +1,20 @@
+---
+title: Affiliate
+description: Affiliation on Codeline
+---
+
+## How to Set Up Affiliates on Codeline
+
+To establish your affiliate program on Codeline, begin by accessing the affiliate settings through your school’s settings page. You can do this by visiting the following link: [Codeline Affiliate Settings](https://codeline.app/admin/affiliates). Once there, enable the affiliate feature and select the products you wish to include in the affiliate program.
+
+After setting up, you can share your school's affiliate page with potential affiliates. The link to your affiliate page is structured as follows: `https://codeline.app/YOUR-SCHOOL-ID/affiliate`.
+
+Affiliates can then use this link to promote your products. They can append their unique affiliate reference to any Codeline link. For instance, a checkout link would look like this: `https://codeline.app/YOUR-SCHOOL-ID/checkout/ITEM_ID?ref=AFFILIATE_ID`, and a landing page link would be: `https://codeline.app/YOUR-SCHOOL-ID/courses/ITEM_ID/courses?ref=AFFILIATE_ID`.
+
+To further enhance tracking and ensure that all links on your site include the affiliate reference, integrate the following script into your product's landing page:
+
+```html
+<script src="https://codeline.app/affiliate-script.js"></script>
+```
+
+This script will automatically track clicks on your links and append the `?ref=AFFILIATE_ID` parameter to every link on your website, ensuring accurate tracking of affiliate referrals.
