@@ -1,0 +1,90 @@
+---
+title: GET Product Users API Endpoint
+description: This API endpoint allows you to retrieve users associated with a specific product.
+---
+
+## Product Users API Endpoint
+
+### Overview
+
+The `Product Users API Endpoint` allows you to retrieve users who are associated with a specific product. This endpoint is part of the `v1` API version and is accessible via the `GET` HTTP method. It supports optional filtering of suspended and cancelled users.
+
+### Endpoint
+
+- **URL**: `https://codeline.app/api/v1/products/[productId]/users`
+- **Method**: `GET`
+
+### Headers
+
+- **Authorization**: Include the bearer token in the `Authorization` header. The token must be prefixed with `Bearer `.
+
+### Query Parameters
+
+- `includeSuspended` (boolean, optional): Include suspended users if set to `true`.
+- `includeCancelled` (boolean, optional): Include cancelled users if set to `true`.
+- `page` (number, optional): Specify the page number for pagination.
+
+### JavaScript Example
+
+Here is an example of how to call the API using JavaScript:
+
+````javascript
+async function fetchProductUsers(productId, token, includeSuspended = false, includeCancelled = false, page = 0) {
+  const url = new URL(`https://codeline.app/api/v1/products/${productId}/users`);
+  
+  // Set query parameters
+  url.searchParams.append('includeSuspended', includeSuspended);
+  url.searchParams.append('includeCancelled', includeCancelled);
+  url.searchParams.append('page', page);
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('Product Users:', data);
+  } catch (error) {
+    console.error('Failed to fetch product users:', error);
+  }
+}
+
+// Example usage
+const productId = 'your-product-id';
+const token = 'your-bearer-token';
+fetchProductUsers(productId, token, true, false, 1);
+````
+
+### Response type
+
+```ts
+export type ProductUsersResponse = {
+  id: string;
+  _count: {
+    users: number;
+  };
+  title: string;
+  users: {
+    user: {
+      id: string;
+      name: string | null;
+      image: string | null;
+    };
+  }[];
+}
+```
+
+### Error Handling
+
+- Ensure the bearer token is valid and included in the request headers.
+- Handle any errors by checking the response status and logging appropriate messages.
+
+This example demonstrates how to construct the request URL with query parameters, set the necessary headers, and handle the response. Adjust the `productId` and `token` variables with your actual values to use this example in your application.

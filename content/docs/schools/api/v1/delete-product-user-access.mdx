@@ -1,0 +1,89 @@
+---
+title: Remove User from Product API Endpoint
+description: This API endpoint allows you to remove a user from a specific product using their user ID or email.
+---
+
+## Remove User from Product API Endpoint
+
+### Overview
+
+The `Remove User from Product API Endpoint` allows you to disassociate a user from a specific product. This endpoint is part of the `v1` API version and is accessible via the `DELETE` HTTP method. You can specify the user by their ID or email.
+
+### Endpoint
+
+- **URL**: `https://codeline.app/api/v1/products/[productId]/users/[user]`
+- **Method**: `DELETE`
+
+### Headers
+
+- **Authorization**: Include the bearer token in the `Authorization` header. The token must be prefixed with `Bearer `.
+- **Content-Type**: `application/json`
+
+### Request Params
+
+- `productId` (string): The ID of the product.
+- `user` (string): The user ID or email of the user to be removed from the product.
+
+### JavaScript Example
+
+Here is an example of how to call the API using JavaScript:
+
+```javascript
+async function removeUserFromProduct(productId, token, user) {
+  const url = `https://codeline.app/api/v1/products/${productId}/users/${user}`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('User removed from product:', data);
+  } catch (error) {
+    console.error('Failed to remove user from product:', error);
+  }
+}
+
+// Example usage
+const productId = 'your-product-id';
+const token = 'your-bearer-token';
+const user = 'user-id-or-email';
+removeUserFromProduct(productId, token, user);
+```
+
+### Response Type
+
+The response from the API is a JSON object containing details about the user and product disassociation. Here is a TypeScript type definition for the response:
+
+```typescript
+type DeletedProductOnUserResponse = {
+  cancelledAt: string | null;
+  suspendedAt: string | null;
+  id: string;
+  product: {
+    id: string;
+    title: string;
+  };
+  createdAt: string;
+  user: {
+    id: string;
+    name: string;
+    image: string | null;
+  };
+};
+```
+
+### Error Handling
+
+- Ensure the bearer token is valid and included in the request headers.
+- Handle any errors by checking the response status and logging appropriate messages.
+
+This example demonstrates how to construct the request with the necessary headers and body, and handle the response. Adjust the `productId`, `token`, and `user` variables with your actual values to use this example in your application.
